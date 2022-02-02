@@ -1,23 +1,56 @@
 package ru.stolyarchuk.server.chat.auth;
 
-import java.util.Set;
+import java.sql.*;
+
 
 public class AuthService {
+    private static Connection connection;
+    private static Statement stmt;
 
-    private static final Set<User> USERS = Set.of(
-            new User("login1", "pass1", "username1"),
-            new User("login2", "pass2", "username2"),
-            new User("login3", "pass3", "username3")
-    );
+    public AuthService() {
+        try {
+            connect();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void connect() throws SQLException {
+        connection = DriverManager.getConnection("jdbc:sqlite:auth_user_BD.db");
+        stmt = connection.createStatement();
+    }
+
+
+    public void disconnect() {
+        try {
+            if (stmt != null) {
+                stmt.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public String getUserNameByLoginAndPassword(String login, String password) {
-        User requiredUser = new User(login, password);
-        for (User user : USERS) {
-            if (requiredUser.equals(user)) {
-                return user.getUserName();
-            }
-        }
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM users WHERE login = ? and pass = ?");
+            ps.setString(1, login);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
 
-        return null;
+            return rs.getString(4);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
+
 }
