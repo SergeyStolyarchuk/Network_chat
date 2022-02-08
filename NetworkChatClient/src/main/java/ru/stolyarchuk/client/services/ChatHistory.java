@@ -1,11 +1,8 @@
 package ru.stolyarchuk.client.services;
-//import org.apache.commons.io.input.ReversedLinesFileReader;
+
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-//import java.util.ArrayList;
-//import java.util.Collections;
-//import java.util.List;
 
 public class ChatHistory implements AutoCloseable {
 
@@ -50,24 +47,6 @@ public class ChatHistory implements AutoCloseable {
         }
     }
 
-//    public String loadLastRows2(int rowsNumber) {
-//        List<String> result = new ArrayList<>(rowsNumber);
-//        try (ReversedLinesFileReader reader = new ReversedLinesFileReader(historyFile, 4096, StandardCharsets.UTF_8)) {
-//            for (int i = 0; i < rowsNumber; i++) {
-//                String line = reader.readLine();
-//                if (line == null) {
-//                    break;
-//                }
-//                result.add(line);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Collections.reverse(result);
-//
-//        return String.join(System.lineSeparator(), result);
-//    }
 
     public String loadLastRows(int rowsNumber) {
         try(RandomAccessFile raf = new RandomAccessFile(historyFile, "r")) {
