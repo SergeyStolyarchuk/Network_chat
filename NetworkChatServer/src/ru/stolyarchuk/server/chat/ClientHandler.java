@@ -24,7 +24,7 @@ public class ClientHandler {
     private String userName;
 
 
-    public ClientHandler(MyServer server, Socket clientSocket) {
+    public ClientHandler(MyServer server, Socket clientSocket) throws IOException {
         this.server = server;
         this.clientSocket = clientSocket;
     }
@@ -33,7 +33,7 @@ public class ClientHandler {
         inputStream = new ObjectInputStream(clientSocket.getInputStream());
         outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 
-        new Thread(() -> {
+        server.getExecutorService().execute (() -> {
             Command preCommand = null;
             try {
                 preCommand = readCommand();
@@ -59,7 +59,7 @@ public class ClientHandler {
                 };
                 Timer timer = new Timer(true);
 
-                timer.schedule(timerTask1, 10000);
+                timer.schedule(timerTask1, 120000);
             }
 
             try {
@@ -75,7 +75,7 @@ public class ClientHandler {
                     System.err.println("Failed to close connection");
                 }
             }
-        }).start();
+        });
 
     }
 
