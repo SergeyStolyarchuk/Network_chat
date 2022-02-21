@@ -9,6 +9,8 @@ import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.stolyarchuk.client.controllers.AuthController;
 import ru.stolyarchuk.client.controllers.ClientController;
 import ru.stolyarchuk.client.dialogs.Dialogs;
@@ -21,6 +23,7 @@ public class ClientChat extends Application {
     public static ClientChat INSTANCE;
 
     public static final String CONNECTION_ERROR_MESSAGE = "Невозможно установить сетевое соединение";
+    private final static Logger LOGGER = LogManager.getLogger(ClientChat.class);
 
     private Stage primaryStage;
     private Stage authStage;
@@ -78,7 +81,7 @@ public class ClientChat extends Application {
 
         if (!result) {
             String errorMessage = CONNECTION_ERROR_MESSAGE;
-            System.err.println(errorMessage);
+            LOGGER.error(errorMessage);
             showErrorDialog(errorMessage);
             return;
         }

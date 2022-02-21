@@ -1,5 +1,7 @@
 package ru.stolyarchuk.client.model;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.stolyarchuk.clientserver.Command;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ public class Network {
     private boolean connected;
     private String currentUsername;
     private ExecutorService executorService;
+    private final static Logger LOGGER = LogManager.getLogger(Network.class);
 
     public static Network getInstance() {
         if (INSTANCE == null) {
@@ -57,7 +60,7 @@ public class Network {
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Не удалось установить соединение");
+            LOGGER.info("Не удалось установить соединение");
             return false;
         }
     }
@@ -71,7 +74,7 @@ public class Network {
     }
 
     public void sendMessage(String message) throws IOException {
-        System.out.println("send public message");
+        LOGGER.info("send public message");
         sendCommand(Command.publicMessageCommand(message));
     }
 
@@ -79,7 +82,7 @@ public class Network {
         try {
             socketOutput.writeObject(command);
         } catch (IOException e) {
-            System.err.println("Не удалось отправить сообщение на сервер");
+            LOGGER.info("Не удалось отправить сообщение на сервер");
             throw e;
         }
     }
@@ -103,7 +106,7 @@ public class Network {
                         messageListener.processReceivedCommand(command);
                     }
                 } catch (IOException e) {
-                    System.err.println("Не удалось прочитать сообщения от сервера");
+                    LOGGER.info("Не удалось прочитать сообщения от сервера");
                     close();
                     break;
                 }
@@ -116,7 +119,7 @@ public class Network {
         try {
             command = (Command) socketInput.readObject();
         } catch (ClassNotFoundException e) {
-            System.err.println("Failed to read Command class");
+            LOGGER.error("Failed to read Command class");
             e.printStackTrace();
         }
 

@@ -49,7 +49,7 @@ public class ClientController {
             if (sender != null) {
                 Network.getInstance().sendPrivateMessage(sender, message);
             } else {
-                System.out.println("ClientController Network.getInstance().sendMessage(message);");
+                //System.out.println("ClientController Network.getInstance().sendMessage(message);");
                 Network.getInstance().sendMessage(message);
             }
 

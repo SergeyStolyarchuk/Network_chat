@@ -1,5 +1,7 @@
 package ru.stolyarchuk.server.chat;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.stolyarchuk.clientserver.Command;
 import ru.stolyarchuk.server.chat.auth.AuthService;
 
@@ -15,7 +17,7 @@ public class MyServer {
 
     private final List<ClientHandler> clients = new ArrayList<>();
     private AuthService authService;
-
+    private final static Logger LOGGER = LogManager.getLogger(MyServer.class);
 
 
     private ExecutorService executorService;
@@ -26,7 +28,7 @@ public class MyServer {
 
     public void start(int port) {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Server has been started");
+            LOGGER.info("Server has been started");
             authService = new AuthService();
             executorService = Executors.newCachedThreadPool();
             while (true) {
@@ -34,7 +36,7 @@ public class MyServer {
             }
 
         } catch (IOException e) {
-            System.err.println("Failed to bind port " + port);
+            LOGGER.error("Failed to bind port " + port);
             e.printStackTrace();
         }
         if (executorService != null) {
@@ -43,9 +45,9 @@ public class MyServer {
     }
 
     private void waitAndProcessClientConnection(ServerSocket serverSocket) throws IOException {
-        System.out.println("Waiting for new client connection");
+        LOGGER.info("Waiting for new client connection");
         Socket clientSocket = serverSocket.accept();
-        System.out.println("Client has been connected");
+        LOGGER.info("Client has been connected");
         ClientHandler clientHandler = new ClientHandler(this, clientSocket);
         clientHandler.handle();
     }
@@ -62,7 +64,7 @@ public class MyServer {
     public synchronized void broadcastMessage(String message, ClientHandler sender) throws IOException {
         for (ClientHandler client : clients) {
             if (client != sender) {
-                System.out.println("clientMessageCommand");
+                LOGGER.info("clientMessageCommand");
                 client.sendCommand(Command.clientMessageCommand(sender.getUserName(), message));
             }
         }
