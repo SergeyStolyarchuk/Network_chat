@@ -1,0 +1,6 @@
+ERROR 2022-02-21 16:15:14 [main] ru.stolyarchuk.server.chat.MyServer (MyServer.java:39) - Failed to bind port 8189
+ERROR 2022-02-21 16:17:19 [main] ru.stolyarchuk.server.chat.MyServer (MyServer.java:39) - Failed to bind port 8189
+INFO  2022-02-21 16:20:25 [main] ru.stolyarchuk.server.chat.MyServer (MyServer.java:31) - Server has been started
+INFO  2022-02-21 16:20:25 [main] ru.stolyarchuk.server.chat.MyServer (MyServer.java:48) - Waiting for new client connection
+INFO  2022-02-21 16:45:33 [main] ru.stolyarchuk.server.chat.MyServer (MyServer.java:31) - Server has been started
+INFO  2022-02-21 16:45:33 [main] ru.stolyarchuk.server.chat.MyServer (MyServer.java:48) - Waiting for new client connection
